@@ -11,7 +11,7 @@ public class ArtistTests
     [Fact]
     public async Task Artist_Page_Contains_All_Artists()
     {
-        await using var factory = new WebApplicationFactory<Program>();
+        await using var factory = WebApplicationFactoryHelper.GetInstance();
         var client = factory.CreateClient();
         var html = await client.GetStringAsync("/artists");
         var decodedHtml = WebUtility.HtmlDecode(html);

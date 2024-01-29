@@ -11,7 +11,7 @@ public class PageTests
     {
         var fakeUsername = $"{Guid.NewGuid()}@rockaway.dev";
         var browsingContext = BrowsingContext.New(Configuration.Default);
-        await using var factory = new WebApplicationFactory<Program>()
+        await using var factory = WebApplicationFactoryHelper.GetInstance()
             .WithWebHostBuilder(builder => builder.AddFakeAuthentication(fakeUsername));
         var client = factory.CreateClient();
         var html = await client.GetStringAsync("/admin");

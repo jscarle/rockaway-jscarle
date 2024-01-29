@@ -13,7 +13,7 @@ public sealed class PageTests
     [InlineData("/about")]
     public async Task Page_Returns_Success(string path)
     {
-        await using var factory = new WebApplicationFactory<Program>();
+        await using var factory = WebApplicationFactoryHelper.GetInstance();
         using var client = factory.CreateClient();
         using var response = await client.GetAsync(path);
         response.EnsureSuccessStatusCode();
@@ -27,7 +27,7 @@ public sealed class PageTests
     public async Task Page_Has_Correct_Title(string url, string title)
     {
         var browsingContext = BrowsingContext.New(Configuration.Default);
-        await using var factory = new WebApplicationFactory<Program>();
+        await using var factory = WebApplicationFactoryHelper.GetInstance();
         var client = factory.CreateClient();
         var html = await client.GetStringAsync(url);
         var dom = await browsingContext.OpenAsync(req => req.Content(html));
@@ -44,7 +44,7 @@ public sealed class PageTests
         const string formattedPhoneNumber = "020 5555 1234";
 
         var browsingContext = BrowsingContext.New(Configuration.Default);
-        await using var factory = new WebApplicationFactory<Program>();
+        await using var factory = WebApplicationFactoryHelper.GetInstance();
         var client = factory.CreateClient();
         var html = await client.GetStringAsync("/contact");
         var dom = await browsingContext.OpenAsync(req => req.Content(html));

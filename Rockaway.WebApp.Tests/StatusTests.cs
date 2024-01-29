@@ -22,7 +22,7 @@ public sealed class StatusTests
     [Fact]
     public async Task Status_Endpoint_Returns_Status()
     {
-        var factory = new WebApplicationFactory<Program>()
+        await using var factory = WebApplicationFactoryHelper.GetInstance()
             .WithWebHostBuilder(builder => builder.ConfigureServices(services =>
             {
                 services.AddSingleton<IStatusReporter>(new TestStatusReporter());
