@@ -1,3 +1,6 @@
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
+using Rockaway.WebApp.Data;
 using Rockaway.WebApp.Services;
 
 namespace Rockaway.WebApp;
@@ -10,6 +13,11 @@ public class Program
 
         builder.Services.AddRazorPages();
         builder.Services.AddSingleton<IStatusReporter, StatusReporter>();
+        var sqliteConnection = new SqliteConnection("Data Source=:memory:");
+        sqliteConnection.Open();
+        builder.Services.AddDbContext<RockawayDbContext>(options => options.UseSqlite(sqliteConnection));
+
+        builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
 
         var app = builder.Build();
 
@@ -17,6 +25,12 @@ public class Program
         {
             app.UseExceptionHandler("/Error");
             app.UseHsts();
+        }
+        
+        using (var scope = app.Services.CreateScope()) {
+            using (var db = scope.ServiceProvider.GetService<RockawayDbContext>()!) {
+                db.Database.EnsureCreated();
+            }
         }
 
         app.UseHttpsRedirection();
