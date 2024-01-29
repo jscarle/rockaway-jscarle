@@ -51,6 +51,9 @@ public class Program
 
         builder.Services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<RockawayDbContext>();
 
+        if (builder.Environment.IsDevelopment())
+            builder.Services.AddSassCompiler();
+
         var app = builder.Build();
 
         if (app.Environment.IsProduction())
