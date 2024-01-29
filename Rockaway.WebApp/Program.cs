@@ -25,17 +25,17 @@ public class Program
 
         builder.Services.AddSingleton<IStatusReporter, StatusReporter>();
 
-        builder.Services.AddRazorPages();
+        builder.Services.AddRazorPages(options => options.Conventions.AuthorizeAreaFolder("admin", "/"));
 
         builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
 
         builder.Services.AddControllersWithViews();
-        
+
         var logger = CreateAdHocLogger<Program>();
 
         logger.LogInformation("Rockaway running in {environment} environment", builder.Environment.EnvironmentName);
 
-        if (HostEnvironmentExtensions.UseSqlite(builder.Environment))
+        if (builder.Environment.UseSqlite())
         {
             logger.LogInformation("Using Sqlite database");
             var sqliteConnection = new SqliteConnection("Data Source=:memory:");
@@ -48,7 +48,7 @@ public class Program
             var connectionString = builder.Configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING");
             builder.Services.AddDbContext<RockawayDbContext>(options => options.UseSqlServer(connectionString));
         }
-        
+
         builder.Services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<RockawayDbContext>();
 
         var app = builder.Build();
@@ -66,7 +66,7 @@ public class Program
         using (var scope = app.Services.CreateScope())
         {
             using var db = scope.ServiceProvider.GetService<RockawayDbContext>()!;
-            if (HostEnvironmentExtensions.UseSqlite(app.Environment))
+            if (app.Environment.UseSqlite())
             {
                 db.Database.EnsureCreated();
             }
@@ -90,8 +90,14 @@ public class Program
 
         app.MapGet("/status", (IStatusReporter reporter) => reporter.GetStatus());
 
+        app.MapAreaControllerRoute(
+            "admin",
+            "Admin",
+            "Admin/{controller=Home}/{action=Index}/{id?}"
+        ).RequireAuthorization();
+
         app.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
-        
+
         app.Run();
     }
 }
