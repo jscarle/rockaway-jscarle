@@ -3,4 +3,6 @@
 public interface IStatusReporter
 {
     public ServerStatus GetStatus();
+
+    public int GetUptime();
 }

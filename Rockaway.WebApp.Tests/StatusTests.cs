@@ -15,7 +15,8 @@ public sealed class StatusTests
         Assembly = "TEST_ASSEMBLY",
         Modified = new DateTimeOffset(2021, 2, 3, 4, 5, 6, TimeSpan.Zero).ToString("O"),
         Hostname = "TEST_HOST",
-        DateTime = new DateTimeOffset(2022, 3, 4, 5, 6, 7, TimeSpan.Zero).ToString("O")
+        DateTime = new DateTimeOffset(2022, 3, 4, 5, 6, 7, TimeSpan.Zero).ToString("O"),
+        Uptime = "394:1:01:01"
     };
 
     [Fact]
@@ -33,11 +34,29 @@ public sealed class StatusTests
         status.ShouldBeEquivalentTo(TestStatus);
     }
 
+    [Fact]
+    public async Task Uptime_Endpoint_Returns_Uptime()
+    {
+        var factory = new WebApplicationFactory<Program>()
+            .WithWebHostBuilder(builder => builder.ConfigureServices(services =>
+            {
+                services.AddSingleton<IStatusReporter>(new TestStatusReporter());
+            }));
+        var client = factory.CreateClient();
+        var uptime = await client.GetStringAsync("/uptime");
+        uptime.ShouldNotBeNull();
+        uptime.ShouldBe("34045261");
+    }
     private class TestStatusReporter : IStatusReporter
     {
         public ServerStatus GetStatus()
         {
             return TestStatus;
+        }
+
+        public int GetUptime()
+        {
+            return 34045261;
         }
     }
 }

@@ -29,6 +29,7 @@ public class Program
         app.MapRazorPages();
 
         app.MapGet("/status", (IStatusReporter reporter) => reporter.GetStatus());
+        app.MapGet("/uptime", (IStatusReporter reporter) => reporter.GetUptime());
 
         app.Run();
     }
