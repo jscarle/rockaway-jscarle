@@ -17,17 +17,7 @@ public sealed class StatusReporter : IStatusReporter
             Modified = LastModified.ToString("O"),
             Hostname = Environment.MachineName,
             DateTime = DateTimeOffset.UtcNow.ToString("O"),
-            Uptime = Uptime().ToString("g").Split('.')[0]
+            Uptime = DateTimeOffset.UtcNow.Subtract(Startup.UtcDateTime).ToString("g").Split('.')[0]
         };
-    }
-
-    public int GetUptime()
-    {
-        return (int)Uptime().TotalSeconds;
-    }
-
-    private TimeSpan Uptime()
-    {
-        return DateTimeOffset.UtcNow.Subtract(Startup.UtcDateTime);
     }
 }
