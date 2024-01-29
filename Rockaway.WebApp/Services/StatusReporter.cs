@@ -6,6 +6,7 @@ public sealed class StatusReporter : IStatusReporter
 {
     private static readonly Assembly Assembly = Assembly.GetEntryAssembly()!;
 
+    private static readonly DateTimeOffset Startup = DateTimeOffset.UtcNow;
     private static readonly DateTimeOffset LastModified = new(File.GetLastWriteTimeUtc(Assembly.Location), TimeSpan.Zero);
 
     public ServerStatus GetStatus()
@@ -27,6 +28,6 @@ public sealed class StatusReporter : IStatusReporter
 
     private TimeSpan Uptime()
     {
-        return DateTimeOffset.UtcNow.Subtract(LastModified.UtcDateTime);
+        return DateTimeOffset.UtcNow.Subtract(Startup.UtcDateTime);
     }
 }

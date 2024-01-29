@@ -16,7 +16,7 @@ public sealed class StatusTests
         Modified = new DateTimeOffset(2021, 2, 3, 4, 5, 6, TimeSpan.Zero).ToString("O"),
         Hostname = "TEST_HOST",
         DateTime = new DateTimeOffset(2022, 3, 4, 5, 6, 7, TimeSpan.Zero).ToString("O"),
-        Uptime = "394:1:01:01"
+        Uptime = "3:15:30"
     };
 
     [Fact]
@@ -45,7 +45,7 @@ public sealed class StatusTests
         var client = factory.CreateClient();
         var uptime = await client.GetStringAsync("/uptime");
         uptime.ShouldNotBeNull();
-        uptime.ShouldBe("34045261");
+        uptime.ShouldBe("11730");
     }
     private class TestStatusReporter : IStatusReporter
     {
@@ -56,7 +56,7 @@ public sealed class StatusTests
 
         public int GetUptime()
         {
-            return 34045261;
+            return 11730;
         }
     }
 }
