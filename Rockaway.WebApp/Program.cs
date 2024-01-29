@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Rockaway.WebApp.Data;
@@ -26,10 +27,10 @@ public class Program
 
         builder.Services.AddRazorPages();
 
-        builder.Services.AddControllersWithViews();
-
         builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
 
+        builder.Services.AddControllersWithViews();
+        
         var logger = CreateAdHocLogger<Program>();
 
         logger.LogInformation("Rockaway running in {environment} environment", builder.Environment.EnvironmentName);
@@ -47,6 +48,8 @@ public class Program
             var connectionString = builder.Configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING");
             builder.Services.AddDbContext<RockawayDbContext>(options => options.UseSqlServer(connectionString));
         }
+        
+        builder.Services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<RockawayDbContext>();
 
         var app = builder.Build();
 
@@ -85,10 +88,10 @@ public class Program
 
         app.MapRazorPages();
 
-        app.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
-
         app.MapGet("/status", (IStatusReporter reporter) => reporter.GetStatus());
 
+        app.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
+        
         app.Run();
     }
 }
