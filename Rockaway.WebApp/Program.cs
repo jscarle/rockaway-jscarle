@@ -34,7 +34,7 @@ public class Program
 
         logger.LogInformation("Rockaway running in {environment} environment", builder.Environment.EnvironmentName);
 
-        if (builder.Environment.UseSqlite())
+        if (HostEnvironmentExtensions.UseSqlite(builder.Environment))
         {
             logger.LogInformation("Using Sqlite database");
             var sqliteConnection = new SqliteConnection("Data Source=:memory:");
@@ -63,7 +63,7 @@ public class Program
         using (var scope = app.Services.CreateScope())
         {
             using var db = scope.ServiceProvider.GetService<RockawayDbContext>()!;
-            if (app.Environment.UseSqlite())
+            if (HostEnvironmentExtensions.UseSqlite(app.Environment))
             {
                 db.Database.EnsureCreated();
             }
