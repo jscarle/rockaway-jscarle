@@ -33,30 +33,12 @@ public sealed class StatusTests
         status.ShouldNotBeNull();
         status.ShouldBeEquivalentTo(TestStatus);
     }
-
-    [Fact]
-    public async Task Uptime_Endpoint_Returns_Uptime()
-    {
-        var factory = new WebApplicationFactory<Program>()
-            .WithWebHostBuilder(builder => builder.ConfigureServices(services =>
-            {
-                services.AddSingleton<IStatusReporter>(new TestStatusReporter());
-            }));
-        var client = factory.CreateClient();
-        var uptime = await client.GetStringAsync("/uptime");
-        uptime.ShouldNotBeNull();
-        uptime.ShouldBe("11730");
-    }
+    
     private class TestStatusReporter : IStatusReporter
     {
         public ServerStatus GetStatus()
         {
             return TestStatus;
-        }
-
-        public int GetUptime()
-        {
-            return 11730;
         }
     }
 }
