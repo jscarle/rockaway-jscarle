@@ -3,6 +3,7 @@ using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using NodaTime;
 using Rockaway.WebApp.Data;
+using Rockaway.WebApp.Data.Sample;
 using Rockaway.WebApp.Hosting;
 using Rockaway.WebApp.Services;
 
@@ -76,16 +77,25 @@ public sealed class Program
         using (var scope = app.Services.CreateScope())
         {
             using var db = scope.ServiceProvider.GetService<RockawayDbContext>()!;
-            if (HostEnvironmentExtensions.UseSqlite(app.Environment))
+            bool.TryParse(app.Configuration["apply-migrations"], out var applyMigrations);
+            if (HostEnvironmentExtensions.UseSqlite(app.Environment) || applyMigrations)
             {
                 db.Database.EnsureCreated();
-            }
-            else if (bool.TryParse(app.Configuration["apply-migrations"], out var applyMigrations) && applyMigrations)
-            {
-                logger.LogInformation("apply-migrations=true was specified. Applying EF migrations and then exiting.");
-                db.Database.Migrate();
-                logger.LogInformation("EF database migrations applied successfully.");
-                Environment.Exit(0);
+                
+                var adminUser = db.Users.FirstOrDefault(user => user.Id == SampleData.Users.Admin.Id);
+                if (adminUser == null)
+                {
+                    db.Users.Add(SampleData.Users.Admin);
+                    db.SaveChanges();
+                }
+
+                if (applyMigrations)
+                {
+                    logger.LogInformation("apply-migrations=true was specified. Applying EF migrations and then exiting.");
+                    db.Database.Migrate();
+                    logger.LogInformation("EF database migrations applied successfully.");
+                    Environment.Exit(0);
+                }
             }
         }
 

@@ -88,9 +88,6 @@ public sealed class RockawayDbContext(DbContextOptions<RockawayDbContext> option
             .HasData(SeedData.For(SampleData.TicketOrders.AllTicketOrders));
         modelBuilder.Entity<TicketOrderItem>()
             .HasData(SeedData.For(SampleData.TicketOrders.AllTicketOrderItems));
-
-        modelBuilder.Entity<IdentityUser>()
-            .HasData(SampleData.Users.Admin);
     }
 
     protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)

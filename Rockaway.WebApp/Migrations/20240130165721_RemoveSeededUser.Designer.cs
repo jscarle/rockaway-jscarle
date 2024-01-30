@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Rockaway.WebApp.Data;
 
@@ -11,18 +12,19 @@ using Rockaway.WebApp.Data;
 namespace Rockaway.WebApp.Migrations
 {
     [DbContext(typeof(RockawayDbContext))]
-    partial class RockawayDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240130165721_RemoveSeededUser")]
+    partial class RemoveSeededUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .UseCollation("Latin1_General_100_CI_AI_SC_UTF8")
                 .HasAnnotation("ProductVersion", "8.0.1")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("SqlServer:IdentityIncrement", 1)
-                .HasAnnotation("SqlServer:IdentitySeed", 1L)
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -59,10 +61,9 @@ namespace Rockaway.WebApp.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
-                        .HasAnnotation("SqlServer:IdentitySeed", 1L)
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ClaimType")
                         .IsUnicode(false)
@@ -162,10 +163,9 @@ namespace Rockaway.WebApp.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
-                        .HasAnnotation("SqlServer:IdentitySeed", 1L)
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ClaimType")
                         .IsUnicode(false)
@@ -286,7 +286,7 @@ namespace Rockaway.WebApp.Migrations
                     b.HasIndex("Slug")
                         .IsUnique();
 
-                    b.ToTable("Artist", (string)null);
+                    b.ToTable("Artist");
 
                     b.HasData(
                         new
@@ -495,7 +495,7 @@ namespace Rockaway.WebApp.Migrations
 
                     b.HasIndex("HeadlineArtistId");
 
-                    b.ToTable("Show", (string)null);
+                    b.ToTable("Show");
 
                     b.HasData(
                         new
@@ -560,7 +560,7 @@ namespace Rockaway.WebApp.Migrations
 
                     b.HasIndex("ArtistId");
 
-                    b.ToTable("SupportSlot", (string)null);
+                    b.ToTable("SupportSlot");
 
                     b.HasData(
                         new
@@ -683,7 +683,7 @@ namespace Rockaway.WebApp.Migrations
 
                     b.HasIndex("ShowVenueId", "ShowDate");
 
-                    b.ToTable("TicketOrder", (string)null);
+                    b.ToTable("TicketOrder");
 
                     b.HasData(
                         new
@@ -733,7 +733,7 @@ namespace Rockaway.WebApp.Migrations
 
                     b.HasIndex("TicketTypeId");
 
-                    b.ToTable("TicketOrderItem", (string)null);
+                    b.ToTable("TicketOrderItem");
 
                     b.HasData(
                         new
@@ -808,7 +808,7 @@ namespace Rockaway.WebApp.Migrations
 
                     b.HasIndex("ShowVenueId", "ShowDate");
 
-                    b.ToTable("TicketType", (string)null);
+                    b.ToTable("TicketType");
 
                     b.HasData(
                         new
@@ -981,7 +981,7 @@ namespace Rockaway.WebApp.Migrations
                     b.HasIndex("Slug")
                         .IsUnique();
 
-                    b.ToTable("Venue", (string)null);
+                    b.ToTable("Venue");
 
                     b.HasData(
                         new
