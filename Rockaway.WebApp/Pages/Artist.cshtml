@@ -1,7 +1,7 @@
 ﻿@page "/artist/{slug}"
 @model ArtistModel
 @{
-    ViewData["Title"] = "Artist";
+    ViewData["Title"] = Model.Artist.Name;
 }
 
 <article class="row">
