@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Razor.TagHelpers;
-using Rockaway.WebApp.Data;
 
-namespace Rockaway.WebApp.TagHelpers;
+namespace Rockaway.WebApp.Data;
 
 public sealed class CountryFlagTagHelper : TagHelper
 {
@@ -22,17 +21,17 @@ public sealed class CountryFlagTagHelper : TagHelper
 
     private class FlagInfo
     {
-        private readonly string src;
+        private readonly string _src;
 
         public FlagInfo(string code)
         {
             var country = Country.FromCode(code);
-            src = (country?.Code ?? "unknown").ToLowerInvariant();
+            _src = (country?.Code ?? "unknown").ToLowerInvariant();
             Title = country?.Name ?? $"unknown country {code}";
         }
 
-        public string Src => $"/img/flags/1x/{src}.png";
-        public string SrcSet => $"/img/flags/2x/{src}.png 2x,/img/flags/3x/{src}.png 3x";
+        public string Src => $"/img/flags/1x/{_src}.png";
+        public string SrcSet => $"/img/flags/2x/{_src}.png 2x,/img/flags/3x/{_src}.png 3x";
         public string Alt => $"Flag of {Title}";
         public string Title { get; }
     }

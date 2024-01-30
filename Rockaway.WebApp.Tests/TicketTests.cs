@@ -33,7 +33,7 @@ public class TicketTests
         var db = TestDatabase.Create(dbName);
         var clock = new FakeClock(Instant.FromUtc(2024, 1, 2, 3, 4, 5));
         var c = new TicketsController(db, clock);
-        var show = await db.Shows.Include(s => s.Venue).FirstOrDefaultAsync();
+        var show = await db.Shows.Include(s => s.Venue).Include(show => show.TicketTypes).FirstOrDefaultAsync();
         show.ShouldNotBeNull();
         var orderCount = db.TicketOrders.Count();
         var tickets = show.TicketTypes.ToDictionary(tt => tt.Id, _ => 1);
@@ -42,6 +42,7 @@ public class TicketTests
 
         var db2 = TestDatabase.Connect(dbName);
         db2.TicketOrders.Count().ShouldBe(orderCount + 1);
-        db2.TicketOrders.First().Contents.Count.ShouldBe(howManyTicketsToExpect);
+        db2.TicketOrders.Include(ticketOrder => ticketOrder.Contents).First().Contents.Count
+            .ShouldBe(howManyTicketsToExpect);
     }
 }

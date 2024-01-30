@@ -38,17 +38,17 @@ public class Venue
 
     [MaxLength(500)] public string Address { get; set; } = string.Empty;
 
-    public string City { get; set; } = string.Empty;
+    [MaxLength(500)] public string City { get; set; } = string.Empty;
 
     [Unicode(false)] [MaxLength(16)] public string CultureName { get; set; } = string.Empty;
 
     public string CountryCode => CultureName.Split("-").Last();
 
-    public string? PostalCode { get; set; }
+    [MaxLength(500)] public string? PostalCode { get; set; }
 
-    [Phone] public string? Telephone { get; set; }
+    [MaxLength(500)] [Phone] public string? Telephone { get; set; }
 
-    [Url] public string? WebsiteUrl { get; set; }
+    [MaxLength(4096)] [Url] public string? WebsiteUrl { get; set; }
 
     public List<Show> Shows { get; set; } = [];
 

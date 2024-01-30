@@ -1,4 +1,5 @@
-﻿using NodaTime;
+﻿using System.ComponentModel.DataAnnotations;
+using NodaTime;
 
 namespace Rockaway.WebApp.Data.Entities;
 
@@ -7,8 +8,8 @@ public class TicketOrder
     public Guid Id { get; set; }
     public Show Show { get; set; } = default!;
     public List<TicketOrderItem> Contents { get; set; } = [];
-    public string CustomerName { get; set; } = string.Empty;
-    public string CustomerEmail { get; set; } = string.Empty;
+    [MaxLength(500)] public string CustomerName { get; set; } = string.Empty;
+    [MaxLength(500)] public string CustomerEmail { get; set; } = string.Empty;
     public Instant CreatedAt { get; set; }
     public Instant? CompletedAt { get; set; }
 

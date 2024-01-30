@@ -1,4 +1,5 @@
-﻿@{ Layout = "_Base"; }
+﻿@* ReSharper disable Html.PathError *@
+@{ Layout = "_Base"; }
 
 @section head {
     @await RenderSectionAsync("Head", false)
@@ -22,6 +23,7 @@
 </main>
 <footer>
     <span>
+
         &copy; 2024 Rockaway<a id="admin-login" href="/admin">admin login</a>
     </span>
     <nav>

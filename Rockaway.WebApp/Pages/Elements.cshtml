@@ -2,7 +2,6 @@
 @page
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @using Rockaway.WebApp.Data
-@using Rockaway.WebApp.TagHelpers
 @{
     ViewData["Title"] = "Elements";
 }
@@ -28,9 +27,9 @@
     <h2>Country Tag Helper</h2>
     @foreach (var country in Country.Iso3166List)
     {
-        <country-flag iso-code="@country.Code"/>
+        <CountryFlagTagHelper iso-code="@country.Code"/>
     }
-    <country-flag iso-code="??"/>
+    <CountryFlagTagHelper iso-code="??"/>
 </section>
 <section>
     <h2>FontAwesome examples:</h2>

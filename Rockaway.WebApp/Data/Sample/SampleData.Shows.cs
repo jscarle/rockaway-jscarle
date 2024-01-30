@@ -24,62 +24,62 @@ public static partial class SampleData
 
     public static class Shows
     {
-        private static int seed = 1;
+        private static int _seed = 1;
 
-        public static readonly Show Coda_Barracuda_20240517 = Venues.Barracuda
+        public static readonly Show CodaBarracuda20240517 = Venues.Barracuda
             .BookShow(Artists.Coda, new LocalDate(2024, 5, 17))
             .WithTicketType(NextId, "Upstairs unallocated seating", 25, 100)
             .WithTicketType(NextId, "Downstairs standing", 25, 120)
             .WithTicketType(NextId, "Cabaret table (4 people)", 120, 10)
             .WithSupportActs(Artists.KillerBite, Artists.Overflow);
 
-        public static readonly Show Coda_Columbia_20240518 = Venues.Columbia
+        public static readonly Show CodaColumbia20240518 = Venues.Columbia
             .BookShow(Artists.Coda, new LocalDate(2024, 5, 18))
             .WithTicketType(NextId, "General Admission", 35)
             .WithTicketType(NextId, "VIP Meet & Greet", 75, 20)
             .WithSupportActs(Artists.KillerBite, Artists.Overflow);
 
-        public static readonly Show Coda_Bataclan_20240519 = Venues.Bataclan
+        public static readonly Show CodaBataclan20240519 = Venues.Bataclan
             .BookShow(Artists.Coda, new LocalDate(2024, 5, 19))
             .WithTicketType(NextId, "General Admission", 35)
             .WithTicketType(NextId, "VIP Meet & Greet", 75)
             .WithSupportActs(Artists.KillerBite, Artists.Overflow, Artists.JavasCrypt);
 
-        public static readonly Show Coda_NewCrossInn_20240520 = Venues.NewCrossInn
+        public static readonly Show CodaNewCrossInn20240520 = Venues.NewCrossInn
             .BookShow(Artists.Coda, new LocalDate(2024, 5, 20))
             .WithTicketType(NextId, "General Admission", 25)
             .WithTicketType(NextId, "VIP Meet & Greet", 55, 20)
             .WithSupportActs(Artists.JavasCrypt);
 
-        public static readonly Show Coda_JohnDee_20240522 = Venues.JohnDee
+        public static readonly Show CodaJohnDee20240522 = Venues.JohnDee
             .BookShow(Artists.Coda, new LocalDate(2024, 5, 22))
             .WithTicketType(NextId, "General Admission", 350)
             .WithTicketType(NextId, "VIP Meet & Greet", 750, 25)
             .WithSupportActs(Artists.JavasCrypt);
 
-        public static readonly Show Coda_PubAnchor_20240523 = Venues.PubAnchor
+        public static readonly Show CodaPubAnchor20240523 = Venues.PubAnchor
             .BookShow(Artists.Coda, new LocalDate(2024, 5, 23))
             .WithTicketType(NextId, "General Admission", 300)
             .WithTicketType(NextId, "VIP Meet & Greet", 720, 10)
             .WithSupportActs(Artists.JavasCrypt);
 
-        public static readonly Show Coda_Gagarin_20240525 =
+        public static readonly Show CodaGagarin20240525 =
             Venues.Gagarin.BookShow(Artists.Coda, new LocalDate(2024, 5, 25))
                 .WithTicketType(NextId, "General Admission", 25)
                 .WithSupportActs(Artists.JavasCrypt, Artists.ScriptKiddies);
 
         public static IEnumerable<Show> AllShows =
         [
-            Coda_Barracuda_20240517,
-            Coda_Columbia_20240518,
-            Coda_Bataclan_20240519,
-            Coda_NewCrossInn_20240520,
-            Coda_JohnDee_20240522,
-            Coda_PubAnchor_20240523,
-            Coda_Gagarin_20240525
+            CodaBarracuda20240517,
+            CodaColumbia20240518,
+            CodaBataclan20240519,
+            CodaNewCrossInn20240520,
+            CodaJohnDee20240522,
+            CodaPubAnchor20240523,
+            CodaGagarin20240525
         ];
 
-        private static Guid NextId => TestGuid(seed++, 'C');
+        private static Guid NextId => TestGuid(_seed++, 'C');
 
         public static IEnumerable<TicketType> AllTicketTypes
             => AllShows.SelectMany(show => show.TicketTypes);
