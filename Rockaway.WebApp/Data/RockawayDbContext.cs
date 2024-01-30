@@ -12,6 +12,7 @@ public sealed class RockawayDbContext(DbContextOptions<RockawayDbContext> option
 {
     public DbSet<Artist> Artists { get; set; } = default!;
     public DbSet<Venue> Venues { get; set; } = default!;
+    public DbSet<Show> Shows { get; set; } = default!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -47,6 +48,8 @@ public sealed class RockawayDbContext(DbContextOptions<RockawayDbContext> option
             entity.HasKey(show => show.Venue.Id, show => show.Date);
             entity.HasMany(show => show.SupportSlots)
                 .WithOne(ss => ss.Show).OnDelete(DeleteBehavior.Cascade);
+            entity.HasMany(show => show.TicketTypes)
+                .WithOne(tt => tt.Show).OnDelete(DeleteBehavior.Cascade);
         });
 
         modelBuilder.Entity<SupportSlot>(entity =>
@@ -58,6 +61,8 @@ public sealed class RockawayDbContext(DbContextOptions<RockawayDbContext> option
             );
         });
 
+        modelBuilder.Entity<TicketType>(entity => { entity.Property(tt => tt.Price).HasColumnType("money"); });
+
         modelBuilder.Entity<Artist>()
             .HasData(SeedData.For(SampleData.Artists.AllArtists));
         modelBuilder.Entity<Venue>()
@@ -66,6 +71,8 @@ public sealed class RockawayDbContext(DbContextOptions<RockawayDbContext> option
             .HasData(SeedData.For(SampleData.Shows.AllShows));
         modelBuilder.Entity<SupportSlot>()
             .HasData(SeedData.For(SampleData.Shows.AllSupportSlots));
+        modelBuilder.Entity<TicketType>()
+            .HasData(SeedData.For(SampleData.Shows.AllTicketTypes));
 
         modelBuilder.Entity<IdentityUser>()
             .HasData(SampleData.Users.Admin);

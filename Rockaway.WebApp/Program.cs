@@ -101,6 +101,8 @@ public sealed class Program
 
         app.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
 
+        app.MapControllers();
+
         app.Run();
     }
 }

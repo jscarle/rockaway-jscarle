@@ -23,6 +23,9 @@ public static class SeedData
     {
         return supportSlots.Select(ToSeedData);
     }
+    
+    public static IEnumerable<object> For(IEnumerable<TicketType> ticketTypes)
+        => ticketTypes.Select(ToSeedData);
 
     private static object ToSeedData(Artist artist)
     {
@@ -71,4 +74,12 @@ public static class SeedData
             ArtistId = slot.Artist.Id
         };
     }
+    
+    private static object ToSeedData(TicketType tt) => new {
+        tt.Id,
+        ShowVenueId = tt.Show.Venue.Id,
+        ShowDate = tt.Show.Date,
+        tt.Price,
+        tt.Name
+    };
 }

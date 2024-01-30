@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using Microsoft.EntityFrameworkCore;
 using NodaTime;
 
@@ -62,4 +63,12 @@ public sealed class Venue
         Shows.Add(show);
         return show;
     }
+    
+    public CultureInfo Culture
+        => CultureInfo.GetCultures(CultureTypes.SpecificCultures)
+               .FirstOrDefault(ci => ci.Name == CultureName)
+           ??
+           CultureInfo.InvariantCulture;
+
+    public string FormatPrice(decimal price) => price.ToString("C", Culture);
 }
