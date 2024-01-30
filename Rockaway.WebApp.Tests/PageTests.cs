@@ -19,10 +19,10 @@ public sealed class PageTests
     }
 
     [Theory]
-    [InlineData("/", "Home Page")]
-    [InlineData("/privacy", "Privacy Policy")]
-    [InlineData("/contact", "Contact Us")]
-    [InlineData("/about", "About Us")]
+    [InlineData("/", "Rockaway")]
+    [InlineData("/privacy", "Privacy Policy | Rockaway")]
+    [InlineData("/contact", "Contact Us | Rockaway")]
+    [InlineData("/about", "About Us | Rockaway")]
     public async Task Page_Has_Correct_Title(string url, string title)
     {
         var browsingContext = BrowsingContext.New(Configuration.Default);
