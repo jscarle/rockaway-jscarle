@@ -1,5 +1,11 @@
 @* ReSharper disable Html.Obsolete *@
 @page
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Rockaway.WebApp.Data
+@using Rockaway.WebApp.TagHelpers
+@{
+    ViewData["Title"] = "Elements";
+}
 
 @section head {
     <style>
@@ -18,6 +24,14 @@
 
 <h1>Elements</h1>
 <p>There's also a <a asp-page="BootstrapCheatsheet">Bootstrap Cheatsheet page</a></p>
+<section>
+    <h2>Country Tag Helper</h2>
+    @foreach (var country in Country.Iso3166List)
+    {
+        <country-flag iso-code="@country.Code"/>
+    }
+    <country-flag iso-code="??"/>
+</section>
 <section>
     <h2>FontAwesome examples:</h2>
     <p>
@@ -38,6 +52,8 @@
         <i class="fa-solid fa-stroopwafel"></i>
         <i class="fa-solid fa-user-astronaut"></i>
     </h1>
+</section>
+<section>
     <h2>Text &amp; Typography</h2>
     <p>Sphinx of black quartz, judge my vow.</p>
     <p>
