@@ -57,14 +57,14 @@ $border-radius-xxl: 6 * $border-radius;
 @mixin fancy-panel($panel-color: color.scale($primary, $lightness: -75%)) {
   margin: $grid-gutter-width 0;
   border-radius: 2 * $border-radius;
-  padding: calc($grid-gutter-width/4) + $border-radius;
+  padding: calc($grid-gutter-width / 4) + $border-radius;
   background-color: $panel-color;
   border: 1px solid $body-color;
 
   @include smartphone {
     border: 0;
     border-radius: 0;
-    margin: 0 0 $grid-gutter-width/2 0;
+    margin: 0 0 calc($grid-gutter-width / 2) 0;
   }
 }
 
@@ -204,5 +204,44 @@ body {
 
   @include smartphone {
     font-size: max(1em, 20px);
+  }
+}
+
+.artist-gallery {
+  @extend .row;
+
+  > section {
+    @extend .col-12;
+    @extend .col-sm-6;
+    @extend .col-md-4;
+    @extend .col-lg-3;
+    @extend .col-xxl-2;
+  }
+}
+
+div.artist-card {
+  border-radius: $border-radius;
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 240px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+
+  &.long-name h4 {
+    font-size: 1.2em;
+  }
+
+  h4 {
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: calc($container-padding-x / 2);
+    margin: 0;
+    border-radius: 0 0 $border-radius $border-radius;
+
+    a {
+      color: #fff;
+      text-decoration: none;
+    }
   }
 }
