@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
+using NodaTime;
 
 namespace Rockaway.WebApp.Data.Entities;
 
-public class Venue
+public sealed class Venue
 {
     public Venue()
     {
@@ -23,6 +24,8 @@ public class Venue
         Telephone = telephone;
         WebsiteUrl = websiteUrl;
     }
+
+    public List<Show> Shows { get; set; } = [];
 
     public Guid Id { get; set; }
 
@@ -45,4 +48,16 @@ public class Venue
     [MaxLength(500)] [Phone] public string? Telephone { get; set; }
 
     [MaxLength(4096)] [Url] public string? WebsiteUrl { get; set; }
+
+    public Show BookShow(Artist artist, LocalDate date)
+    {
+        var show = new Show
+        {
+            Venue = this,
+            HeadlineArtist = artist,
+            Date = date
+        };
+        Shows.Add(show);
+        return show;
+    }
 }

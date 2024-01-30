@@ -3,7 +3,7 @@ using Shouldly;
 
 namespace Rockaway.WebApp.Tests.Areas.Admin;
 
-public class PageTests
+public sealed class PageTests
 {
     [Fact]
     public async Task Admin_Has_Personalised_Nav()

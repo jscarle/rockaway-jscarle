@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Rockaway.WebApp.Data.Entities;
 
-public class Artist
+public sealed class Artist
 {
     public Artist()
     {
@@ -16,6 +16,8 @@ public class Artist
         Description = description;
         Slug = slug;
     }
+
+    public List<Show> HeadlineShows { get; set; } = [];
 
     public Guid Id { get; set; }
 

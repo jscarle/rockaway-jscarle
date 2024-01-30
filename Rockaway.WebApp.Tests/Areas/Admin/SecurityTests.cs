@@ -4,7 +4,7 @@ using Shouldly;
 
 namespace Rockaway.WebApp.Tests.Areas.Admin;
 
-public class SecurityTests
+public sealed class SecurityTests
 {
     [Fact]
     public async Task Admin_Returns_Redirect_When_Not_Signed_In()

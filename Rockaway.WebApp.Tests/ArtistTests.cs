@@ -5,7 +5,7 @@ using Shouldly;
 
 namespace Rockaway.WebApp.Tests;
 
-public class ArtistTests
+public sealed class ArtistTests
 {
     [Fact]
     public async Task Artist_Page_Contains_All_Artists()

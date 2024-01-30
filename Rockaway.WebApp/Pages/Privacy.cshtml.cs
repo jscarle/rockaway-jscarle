@@ -2,7 +2,7 @@
 
 namespace Rockaway.WebApp.Pages;
 
-public class PrivacyModel : PageModel
+public sealed class PrivacyModel : PageModel
 {
     public void OnGet()
     {

@@ -7,7 +7,7 @@ using Rockaway.WebApp.Services;
 
 namespace Rockaway.WebApp;
 
-public class Program
+public sealed class Program
 {
     private static ILogger<T> CreateAdHocLogger<T>()
     {

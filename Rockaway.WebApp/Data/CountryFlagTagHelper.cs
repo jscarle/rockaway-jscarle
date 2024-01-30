@@ -3,7 +3,7 @@ using Rockaway.WebApp.Data;
 
 namespace Rockaway.WebApp.TagHelpers;
 
-public class CountryFlagTagHelper : TagHelper
+public sealed class CountryFlagTagHelper : TagHelper
 {
     public string IsoCode { get; set; } = default!;
 

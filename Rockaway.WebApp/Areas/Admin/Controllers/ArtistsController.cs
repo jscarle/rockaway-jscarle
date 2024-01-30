@@ -6,7 +6,7 @@ using Rockaway.WebApp.Data.Entities;
 namespace Rockaway.WebApp.Areas.Admin.Controllers;
 
 [Area("admin")]
-public class ArtistsController(RockawayDbContext context) : Controller
+public sealed class ArtistsController(RockawayDbContext context) : Controller
 {
     // GET: Artists
     public async Task<IActionResult> Index()

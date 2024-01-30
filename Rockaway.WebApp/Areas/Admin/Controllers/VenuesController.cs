@@ -6,7 +6,7 @@ using Rockaway.WebApp.Data.Entities;
 namespace Rockaway.WebApp.Areas.Admin.Controllers;
 
 [Area("admin")]
-public class VenuesController(RockawayDbContext context) : Controller
+public sealed class VenuesController(RockawayDbContext context) : Controller
 {
     // GET: Venues
     public async Task<IActionResult> Index()

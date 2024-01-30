@@ -4,7 +4,7 @@ using Rockaway.WebApp.Models;
 
 namespace Rockaway.WebApp.Pages;
 
-public class ArtistsModel(RockawayDbContext db) : PageModel
+public sealed class ArtistsModel(RockawayDbContext db) : PageModel
 {
     public IEnumerable<ArtistViewData> Artists = default!;
 
