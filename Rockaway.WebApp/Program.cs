@@ -26,14 +26,17 @@ public sealed class Program
         var builder = WebApplication.CreateBuilder(args);
 
         builder.Services.AddSingleton<IStatusReporter, StatusReporter>();
-        
+
         builder.Services.AddSingleton<IClock>(SystemClock.Instance);
 
         builder.Services.AddRazorPages(options => options.Conventions.AuthorizeAreaFolder("admin", "/"));
 
         builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
 
-        builder.Services.AddControllersWithViews();
+        builder.Services.AddControllersWithViews(options =>
+        {
+            options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
+        });
 
         var logger = CreateAdHocLogger<Program>();
 

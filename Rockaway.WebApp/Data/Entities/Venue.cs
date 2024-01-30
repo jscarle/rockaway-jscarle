@@ -5,7 +5,7 @@ using NodaTime;
 
 namespace Rockaway.WebApp.Data.Entities;
 
-public sealed class Venue
+public class Venue
 {
     public Venue()
     {
@@ -26,8 +26,6 @@ public sealed class Venue
         WebsiteUrl = websiteUrl;
     }
 
-    public List<Show> Shows { get; set; } = [];
-
     public Guid Id { get; set; }
 
     [MaxLength(100)] public string Name { get; set; } = string.Empty;
@@ -40,17 +38,35 @@ public sealed class Venue
 
     [MaxLength(500)] public string Address { get; set; } = string.Empty;
 
-    [MaxLength(500)] public string City { get; set; } = string.Empty;
+    public string City { get; set; } = string.Empty;
 
     [Unicode(false)] [MaxLength(16)] public string CultureName { get; set; } = string.Empty;
 
     public string CountryCode => CultureName.Split("-").Last();
 
-    [MaxLength(500)] public string? PostalCode { get; set; }
+    public string? PostalCode { get; set; }
 
-    [MaxLength(500)] [Phone] public string? Telephone { get; set; }
+    [Phone] public string? Telephone { get; set; }
 
-    [MaxLength(4096)] [Url] public string? WebsiteUrl { get; set; }
+    [Url] public string? WebsiteUrl { get; set; }
+
+    public List<Show> Shows { get; set; } = [];
+
+    public CultureInfo Culture
+    {
+        get
+        {
+            var cultures = CultureInfo.GetCultures(CultureTypes.SpecificCultures);
+            var culture = cultures.FirstOrDefault(ci => ci.Name == CultureName) ?? CultureInfo.InvariantCulture;
+            return culture;
+        }
+    }
+
+    private IEnumerable<string?> AddressTokens => [Address, City, PostalCode];
+    private IEnumerable<string?> SummaryTokens => [Name, Address, City, PostalCode, Country.GetName(CountryCode)];
+
+    public string FullAddress => string.Join(", ", AddressTokens.Where(s => !string.IsNullOrWhiteSpace(s)));
+    public string Summary => string.Join(", ", SummaryTokens.Where(s => !string.IsNullOrWhiteSpace(s)));
 
     public Show BookShow(Artist artist, LocalDate date)
     {
@@ -63,12 +79,9 @@ public sealed class Venue
         Shows.Add(show);
         return show;
     }
-    
-    public CultureInfo Culture
-        => CultureInfo.GetCultures(CultureTypes.SpecificCultures)
-               .FirstOrDefault(ci => ci.Name == CultureName)
-           ??
-           CultureInfo.InvariantCulture;
 
-    public string FormatPrice(decimal price) => price.ToString("C", Culture);
+    public string FormatPrice(decimal price)
+    {
+        return price.ToString("C", Culture);
+    }
 }

@@ -15,4 +15,9 @@ public class TicketType(Guid id, Show show, string name, decimal price, int? lim
 
     public string FormattedPrice
         => Show.Venue.FormatPrice(Price);
+
+    public string FormatPrice(int quantity)
+    {
+        return Show.Venue.FormatPrice(Price * quantity);
+    }
 }
