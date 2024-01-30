@@ -31,17 +31,17 @@ internal class FakeAuthenticationFilter(string emailAddress) : IStartupFilter
 
     private class FakeAuthenticationMiddleware(RequestDelegate next, IOptions<FakeAuthenticationOptions> options)
     {
-        private readonly string authenticationType = IdentityConstants.ApplicationScheme;
-        private readonly string emailAddress = options.Value.EmailAddress;
+        private readonly string _authenticationType = IdentityConstants.ApplicationScheme;
+        private readonly string _emailAddress = options.Value.EmailAddress;
 
         public async Task InvokeAsync(HttpContext context)
         {
             var claims = new Claim[]
             {
-                new(ClaimTypes.Name, emailAddress),
-                new(ClaimTypes.Email, emailAddress)
+                new(ClaimTypes.Name, _emailAddress),
+                new(ClaimTypes.Email, _emailAddress)
             };
-            var identity = new ClaimsIdentity(claims, authenticationType);
+            var identity = new ClaimsIdentity(claims, _authenticationType);
             context.User = new ClaimsPrincipal(identity);
             await next(context);
         }

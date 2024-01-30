@@ -1,5 +1,4 @@
 ﻿using System.Text.Json;
-using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Rockaway.WebApp.Services;
 using Shouldly;
@@ -33,7 +32,7 @@ public sealed class StatusTests
         status.ShouldNotBeNull();
         status.ShouldBeEquivalentTo(TestStatus);
     }
-    
+
     private class TestStatusReporter : IStatusReporter
     {
         public ServerStatus GetStatus()
