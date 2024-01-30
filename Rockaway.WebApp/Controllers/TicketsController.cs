@@ -8,7 +8,7 @@ using Rockaway.WebApp.Models;
 namespace Rockaway.WebApp.Controllers;
 
 [Route("[action]/{venue}/{date}")]
-public class TicketsController(RockawayDbContext db) : Controller
+public class TicketsController(RockawayDbContext db, IClock clock) : Controller
 {
     private Task<Show?> FindShow(string venue, LocalDate date)
     {
@@ -33,9 +33,10 @@ public class TicketsController(RockawayDbContext db) : Controller
     public async Task<IActionResult> Show(string venue, LocalDate date, Dictionary<Guid, int> tickets)
     {
         var show = await FindShow(venue, date);
-        if (show == default)
-            return NotFound();
-        //TODO: create orders, add to database, and redirect to checkout
-        return Ok(tickets);
+        if (show == default) return NotFound();
+        var ticketOrder = show.CreateOrder(tickets, clock.GetCurrentInstant());
+        db.TicketOrders.Add(ticketOrder);
+        await db.SaveChangesAsync();
+        return Ok($"Order {ticketOrder.Reference} created. We should probably capture some customer details next.");
     }
 }

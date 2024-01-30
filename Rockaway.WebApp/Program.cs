@@ -1,12 +1,14 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using NodaTime;
 using Rockaway.WebApp.Data;
 using Rockaway.WebApp.Hosting;
 using Rockaway.WebApp.Services;
 
 namespace Rockaway.WebApp;
 
+// ReSharper disable InvokeAsExtensionMethod
 public sealed class Program
 {
     private static ILogger<T> CreateAdHocLogger<T>()
@@ -24,6 +26,8 @@ public sealed class Program
         var builder = WebApplication.CreateBuilder(args);
 
         builder.Services.AddSingleton<IStatusReporter, StatusReporter>();
+        
+        builder.Services.AddSingleton<IClock>(SystemClock.Instance);
 
         builder.Services.AddRazorPages(options => options.Conventions.AuthorizeAreaFolder("admin", "/"));
 
@@ -35,7 +39,7 @@ public sealed class Program
 
         logger.LogInformation("Rockaway running in {environment} environment", builder.Environment.EnvironmentName);
 
-        if (builder.Environment.UseSqlite())
+        if (HostEnvironmentExtensions.UseSqlite(builder.Environment))
         {
             logger.LogInformation("Using Sqlite database");
             var sqliteConnection = new SqliteConnection("Data Source=:memory:");
@@ -51,12 +55,12 @@ public sealed class Program
 
         builder.Services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<RockawayDbContext>();
 
-        if (builder.Environment.IsDevelopment())
+        if (HostEnvironmentEnvExtensions.IsDevelopment(builder.Environment))
             builder.Services.AddSassCompiler();
 
         var app = builder.Build();
 
-        if (app.Environment.IsProduction())
+        if (HostEnvironmentEnvExtensions.IsProduction(app.Environment))
         {
             app.UseExceptionHandler("/Error");
             app.UseHsts();
@@ -69,7 +73,7 @@ public sealed class Program
         using (var scope = app.Services.CreateScope())
         {
             using var db = scope.ServiceProvider.GetService<RockawayDbContext>()!;
-            if (app.Environment.UseSqlite())
+            if (HostEnvironmentExtensions.UseSqlite(app.Environment))
             {
                 db.Database.EnsureCreated();
             }

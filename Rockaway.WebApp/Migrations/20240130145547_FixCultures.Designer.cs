@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Rockaway.WebApp.Data;
 
@@ -11,9 +12,11 @@ using Rockaway.WebApp.Data;
 namespace Rockaway.WebApp.Migrations
 {
     [DbContext(typeof(RockawayDbContext))]
-    partial class RockawayDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240130145547_FixCultures")]
+    partial class FixCultures
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -160,15 +163,15 @@ namespace Rockaway.WebApp.Migrations
                         {
                             Id = "rockaway-sample-admin-user",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "b5405dba-da9e-46af-b25e-75911d85289b",
+                            ConcurrencyStamp = "12def4c1-9bcf-4d1f-ac78-83b8df36b17f",
                             Email = "admin@rockaway.dev",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
                             NormalizedEmail = "ADMIN@ROCKAWAY.DEV",
                             NormalizedUserName = "ADMIN@ROCKAWAY.DEV",
-                            PasswordHash = "AQAAAAIAAYagAAAAENxZnino01KHfjhmibhBeybYUbeJcpAESe96/itZzAm3JOSmtemwOqCIMAY9BI7EZg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAECh4X0pYVOG/EPBqrjhM77DEGpTiqUuNm4v6yBUDOX11XgXNtWrHZsIipp5+o/VTSg==",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "d8359c6f-2de7-48d4-8df9-e1d2cc30384d",
+                            SecurityStamp = "3fdc940e-d793-42eb-9a5f-22ad427b23cf",
                             TwoFactorEnabled = false,
                             UserName = "admin@rockaway.dev"
                         });
@@ -664,135 +667,6 @@ namespace Rockaway.WebApp.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Rockaway.WebApp.Data.Entities.TicketOrder", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTimeOffset?>("CompletedAt")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<DateTimeOffset>("CreatedAt")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("CustomerEmail")
-                        .IsRequired()
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(max)");
-
-                    b.Property<string>("CustomerName")
-                        .IsRequired()
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(max)");
-
-                    b.Property<DateOnly>("ShowDate")
-                        .HasColumnType("date");
-
-                    b.Property<Guid>("ShowVenueId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ShowVenueId", "ShowDate");
-
-                    b.ToTable("TicketOrder");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("ac824d10-367f-494c-ad32-f221420c7c3c"),
-                            CompletedAt = new DateTimeOffset(new DateTime(2024, 4, 5, 9, 20, 16, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            CreatedAt = new DateTimeOffset(new DateTime(2024, 4, 5, 9, 4, 16, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            CustomerEmail = "ace@example.com",
-                            CustomerName = "Ace Frehley",
-                            ShowDate = new DateOnly(2024, 5, 17),
-                            ShowVenueId = new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbb7")
-                        },
-                        new
-                        {
-                            Id = new Guid("560ed55e-c635-4f0e-a433-a23ab6fa7bb6"),
-                            CompletedAt = new DateTimeOffset(new DateTime(2024, 4, 8, 13, 22, 18, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            CreatedAt = new DateTimeOffset(new DateTime(2024, 4, 8, 13, 4, 18, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            CustomerEmail = "brian@example.com",
-                            CustomerName = "Brian Johnson",
-                            ShowDate = new DateOnly(2024, 5, 20),
-                            ShowVenueId = new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbb9")
-                        },
-                        new
-                        {
-                            Id = new Guid("f584739d-2ec0-4de8-8de2-140333516b4f"),
-                            CompletedAt = new DateTimeOffset(new DateTime(2024, 4, 11, 10, 16, 12, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            CreatedAt = new DateTimeOffset(new DateTime(2024, 4, 11, 10, 4, 12, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            CustomerEmail = "joey.tempest@example.com",
-                            CustomerName = "Joey Tempest",
-                            ShowDate = new DateOnly(2024, 5, 23),
-                            ShowVenueId = new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbb8")
-                        });
-                });
-
-            modelBuilder.Entity("Rockaway.WebApp.Data.Entities.TicketOrderItem", b =>
-                {
-                    b.Property<Guid>("TicketOrderId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("TicketTypeId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.HasKey("TicketOrderId", "TicketTypeId");
-
-                    b.HasIndex("TicketTypeId");
-
-                    b.ToTable("TicketOrderItem");
-
-                    b.HasData(
-                        new
-                        {
-                            TicketOrderId = new Guid("ac824d10-367f-494c-ad32-f221420c7c3c"),
-                            TicketTypeId = new Guid("cccccccc-cccc-cccc-cccc-ccccccccccc1"),
-                            Quantity = 4
-                        },
-                        new
-                        {
-                            TicketOrderId = new Guid("ac824d10-367f-494c-ad32-f221420c7c3c"),
-                            TicketTypeId = new Guid("cccccccc-cccc-cccc-cccc-ccccccccccc2"),
-                            Quantity = 5
-                        },
-                        new
-                        {
-                            TicketOrderId = new Guid("ac824d10-367f-494c-ad32-f221420c7c3c"),
-                            TicketTypeId = new Guid("cccccccc-cccc-cccc-cccc-ccccccccccc3"),
-                            Quantity = 5
-                        },
-                        new
-                        {
-                            TicketOrderId = new Guid("560ed55e-c635-4f0e-a433-a23ab6fa7bb6"),
-                            TicketTypeId = new Guid("cccccccc-cccc-cccc-cccc-ccccccccccc8"),
-                            Quantity = 3
-                        },
-                        new
-                        {
-                            TicketOrderId = new Guid("560ed55e-c635-4f0e-a433-a23ab6fa7bb6"),
-                            TicketTypeId = new Guid("cccccccc-cccc-cccc-cccc-ccccccccccc9"),
-                            Quantity = 2
-                        },
-                        new
-                        {
-                            TicketOrderId = new Guid("f584739d-2ec0-4de8-8de2-140333516b4f"),
-                            TicketTypeId = new Guid("cccccccc-cccc-cccc-cccc-cccccccccc12"),
-                            Quantity = 3
-                        },
-                        new
-                        {
-                            TicketOrderId = new Guid("f584739d-2ec0-4de8-8de2-140333516b4f"),
-                            TicketTypeId = new Guid("cccccccc-cccc-cccc-cccc-cccccccccc13"),
-                            Quantity = 2
-                        });
-                });
-
             modelBuilder.Entity("Rockaway.WebApp.Data.Entities.TicketType", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1193,36 +1067,6 @@ namespace Rockaway.WebApp.Migrations
                     b.Navigation("Show");
                 });
 
-            modelBuilder.Entity("Rockaway.WebApp.Data.Entities.TicketOrder", b =>
-                {
-                    b.HasOne("Rockaway.WebApp.Data.Entities.Show", "Show")
-                        .WithMany("TicketOrders")
-                        .HasForeignKey("ShowVenueId", "ShowDate")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Show");
-                });
-
-            modelBuilder.Entity("Rockaway.WebApp.Data.Entities.TicketOrderItem", b =>
-                {
-                    b.HasOne("Rockaway.WebApp.Data.Entities.TicketOrder", "TicketOrder")
-                        .WithMany("Contents")
-                        .HasForeignKey("TicketOrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Rockaway.WebApp.Data.Entities.TicketType", "TicketType")
-                        .WithMany()
-                        .HasForeignKey("TicketTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("TicketOrder");
-
-                    b.Navigation("TicketType");
-                });
-
             modelBuilder.Entity("Rockaway.WebApp.Data.Entities.TicketType", b =>
                 {
                     b.HasOne("Rockaway.WebApp.Data.Entities.Show", "Show")
@@ -1243,14 +1087,7 @@ namespace Rockaway.WebApp.Migrations
                 {
                     b.Navigation("SupportSlots");
 
-                    b.Navigation("TicketOrders");
-
                     b.Navigation("TicketTypes");
-                });
-
-            modelBuilder.Entity("Rockaway.WebApp.Data.Entities.TicketOrder", b =>
-                {
-                    b.Navigation("Contents");
                 });
 
             modelBuilder.Entity("Rockaway.WebApp.Data.Entities.Venue", b =>

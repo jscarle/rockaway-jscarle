@@ -18,9 +18,29 @@ public sealed class Show
 
     public List<TicketType> TicketTypes { get; set; } = [];
 
+    public List<TicketOrder> TicketOrders { get; set; } = [];
+
     public Dictionary<string, string> RouteData => new()
     {
         { "venue", Venue.Slug },
         { "date", Date.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture) }
     };
+
+    public TicketOrder CreateOrder(Dictionary<Guid, int> contents, Instant now)
+    {
+        var order = new TicketOrder
+        {
+            Show = this,
+            CreatedAt = now
+        };
+        foreach (var (id, quantity) in contents)
+        {
+            var ticketType = TicketTypes.FirstOrDefault(tt => tt.Id == id);
+            if (ticketType == default) continue;
+            order.UpdateQuantity(ticketType, quantity);
+        }
+
+        TicketOrders.Add(order);
+        return order;
+    }
 }

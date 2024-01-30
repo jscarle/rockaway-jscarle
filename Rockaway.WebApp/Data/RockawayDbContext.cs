@@ -7,12 +7,14 @@ using Rockaway.WebApp.Data.Sample;
 
 namespace Rockaway.WebApp.Data;
 
+// ReSharper disable InvokeAsExtensionMethod
 public sealed class RockawayDbContext(DbContextOptions<RockawayDbContext> options)
     : IdentityDbContext<IdentityUser>(options)
 {
     public DbSet<Artist> Artists { get; set; } = default!;
     public DbSet<Venue> Venues { get; set; } = default!;
     public DbSet<Show> Shows { get; set; } = default!;
+    public DbSet<TicketOrder> TicketOrders { get; set; } = default!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -45,23 +47,32 @@ public sealed class RockawayDbContext(DbContextOptions<RockawayDbContext> option
 
         modelBuilder.Entity<Show>(entity =>
         {
-            entity.HasKey(show => show.Venue.Id, show => show.Date);
+            EntityTypeBuilderExtensions.HasKey(entity, show => show.Venue.Id, show => show.Date);
             entity.HasMany(show => show.SupportSlots)
                 .WithOne(ss => ss.Show).OnDelete(DeleteBehavior.Cascade);
             entity.HasMany(show => show.TicketTypes)
                 .WithOne(tt => tt.Show).OnDelete(DeleteBehavior.Cascade);
+            entity.HasMany(show => show.TicketOrders)
+                .WithOne(to => to.Show).OnDelete(DeleteBehavior.Restrict);
         });
 
         modelBuilder.Entity<SupportSlot>(entity =>
         {
-            entity.HasKey(
-                slot => slot.Show.Venue.Id,
+            EntityTypeBuilderExtensions.HasKey(entity, slot => slot.Show.Venue.Id,
                 slot => slot.Show.Date,
                 slot => slot.SlotNumber
             );
         });
 
         modelBuilder.Entity<TicketType>(entity => { entity.Property(tt => tt.Price).HasColumnType("money"); });
+
+        modelBuilder.Entity<TicketOrderItem>(entity =>
+        {
+            EntityTypeBuilderExtensions.HasKey(entity,
+                toi => toi.TicketOrder.Id,
+                toi => toi.TicketType.Id
+            );
+        });
 
         modelBuilder.Entity<Artist>()
             .HasData(SeedData.For(SampleData.Artists.AllArtists));
@@ -73,6 +84,10 @@ public sealed class RockawayDbContext(DbContextOptions<RockawayDbContext> option
             .HasData(SeedData.For(SampleData.Shows.AllSupportSlots));
         modelBuilder.Entity<TicketType>()
             .HasData(SeedData.For(SampleData.Shows.AllTicketTypes));
+        modelBuilder.Entity<TicketOrder>()
+            .HasData(SeedData.For(SampleData.TicketOrders.AllTicketOrders));
+        modelBuilder.Entity<TicketOrderItem>()
+            .HasData(SeedData.For(SampleData.TicketOrders.AllTicketOrderItems));
 
         modelBuilder.Entity<IdentityUser>()
             .HasData(SampleData.Users.Admin);
@@ -83,6 +98,6 @@ public sealed class RockawayDbContext(DbContextOptions<RockawayDbContext> option
         base.ConfigureConventions(configurationBuilder);
 
         configurationBuilder.Conventions.Add(_ => new StringNotUnicodeConvention());
-        configurationBuilder.AddNodaTimeConverters();
+        NodaTimeConverters.AddNodaTimeConverters(configurationBuilder);
     }
 }
